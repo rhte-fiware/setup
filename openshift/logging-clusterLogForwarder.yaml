@@ -1,0 +1,30 @@
+---
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  inputs:
+    - application:
+        selector:
+          matchLabels:
+            marinera/platform: fiware
+      name: FiwareLogs
+  outputDefaults:
+    elasticsearch:
+      structuredTypeKey: kubernetes.namespace_name
+  pipelines:
+    - inputRefs:
+        - FiwareLogs
+      name: pipeline-fiware-logs
+      outputRefs:
+        - default
+      parse: json
+    - inputRefs:
+        - infrastructure
+        - application
+        - audit
+      name: all-to-default
+      outputRefs:
+        - default

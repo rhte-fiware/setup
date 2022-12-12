@@ -1,2 +1,34 @@
 = Set-Up Marinera
 
+This repository contains tools to automate the configuration of the Marinera prerequisites.
+
+Marinera is a repository that contains all scripts required for deploying a FIWARE platform to run on an OpenShift cluster.
+
+== How to run it
+
+The following command will install ArgoCD, etc:
+
+[source, bash]
+----
+oc apply -f openshift
+----
+
+// After everything is configured, run the following command to activate the console plugin:
+
+// [source, bash]
+// ----
+// oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["logging-view-plugin"] }  }' --type=merge
+// ----
+
+To install Sealed Secrets, execute the following command:
+
+[source, bash]
+----
+# First of all, add the Sealed Secrets repo:
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+
+# Install it by using the values file in this repo:
+helm install sealed-secrets -f sealed-secrets/values.yaml sealed-secrets/sealed-secrets
+----
+
+For more information, check this amazing https://kubernesto.github.io/posts/secrets-charts/#install-sealed-secrets-in-openshift[blog].
