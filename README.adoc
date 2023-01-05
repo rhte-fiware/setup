@@ -11,6 +11,8 @@ This script has been tested on OpenShift version 4.11.8. The OCP cluster has the
 * Masters: m5.xlarge  (16GB / 4 cores).
 * Workers: m5.4xlarge (62GB / 16 cores).
 
+NOTE: I'm using `OpenShift 4.11 Workshop`, but you can use any other option.
+
 == How to run it
 
 Executing the setup is as easy as executing the following command:
