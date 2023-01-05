@@ -6,4 +6,4 @@ metadata:
   namespace: openshift-logging
 spec:
   targetNamespaces:
-  - openshift-logging
+    - openshift-logging

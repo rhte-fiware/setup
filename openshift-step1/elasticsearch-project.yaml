@@ -1,0 +1,11 @@
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: openshift-operators-redhat 
+  annotations:
+    openshift.io/description: "This project contains the Openshift Operators supported by Red Hat"
+    openshift.io/display-name: "Openshift Operators - Red Hat"
+    openshift.io/node-selector: ""
+  labels:
+    openshift.io/cluster-monitoring: "true" 

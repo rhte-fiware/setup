@@ -6,11 +6,18 @@ Marinera is a repository that contains all scripts required for deploying a FIWA
 
 == How to run it
 
-The following command will install ArgoCD, etc:
+The following command will create the projects for the operators (Elasticsearch, Openshift Logging, ArgoCD, etc.):
 
 [source, bash]
 ----
-oc apply -f openshift
+oc apply -f openshift-step1
+----
+
+The following command will install all the operators (Elasticsearch, Openshift Logging, ArgoCD, etc.):
+
+[source, bash]
+----
+oc apply -f openshift-step2
 ----
 
 // After everything is configured, run the following command to activate the console plugin:
@@ -18,6 +25,14 @@ oc apply -f openshift
 // [source, bash]
 // ----
 // oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["logging-view-plugin"] }  }' --type=merge
+// ----
+
+
+// Check the ArgoCD admin password:
+
+// [source, bash]
+// ----
+// oc extract secret/argocd-cluster -n openshift-gitops --to=-
 // ----
 
 To install Sealed Secrets, execute the following command:
@@ -32,3 +47,4 @@ helm install sealed-secrets -f sealed-secrets/values.yaml sealed-secrets/sealed-
 ----
 
 For more information, check this amazing https://kubernesto.github.io/posts/secrets-charts/#install-sealed-secrets-in-openshift[blog].
+
