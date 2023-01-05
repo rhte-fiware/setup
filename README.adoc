@@ -4,47 +4,58 @@ This repository contains tools to automate the configuration of the Marinera pre
 
 Marinera is a repository that contains all scripts required for deploying a FIWARE platform to run on an OpenShift cluster.
 
+== Prerequisites
+
+This script has been tested on OpenShift version 4.11.8. The OCP cluster has the following nodes:
+
+* Masters: m5.xlarge  (16GB / 4 cores).
+* Workers: m5.4xlarge (62GB / 16 cores).
+
 == How to run it
 
-The following command will create the projects for the operators (Elasticsearch, Openshift Logging, ArgoCD, etc.):
+Executing the setup is as easy as executing the following command:
+
+[source, bash]
+----
+./autoinstall.sh
+----
+
+=== Can I execute the steps manually?
+
+Yes, you can execute the following commands for each step: 
+
+1) The following command will create the projects for the operators (Elasticsearch, Openshift Logging, ArgoCD, etc.):
 
 [source, bash]
 ----
 oc apply -f openshift-step1
 ----
 
-The following command will install all the operators (Elasticsearch, Openshift Logging, ArgoCD, etc.):
+2) The following command will install all the operators (Elasticsearch, Openshift Logging, ArgoCD, etc.):
 
 [source, bash]
 ----
 oc apply -f openshift-step2
 ----
 
-// After everything is configured, run the following command to activate the console plugin:
-
-// [source, bash]
-// ----
-// oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["logging-view-plugin"] }  }' --type=merge
-// ----
-
-
-// Check the ArgoCD admin password:
-
-// [source, bash]
-// ----
-// oc extract secret/argocd-cluster -n openshift-gitops --to=-
-// ----
-
-To install Sealed Secrets, execute the following command:
+3) After everything is configured, run the following command to activate the console plugin:
 
 [source, bash]
 ----
-# First of all, add the Sealed Secrets repo:
-helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
-
-# Install it by using the values file in this repo:
-helm install sealed-secrets -f sealed-secrets/values.yaml sealed-secrets/sealed-secrets
+oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["logging-view-plugin"] }  }' --type=merge
 ----
 
-For more information, check this amazing https://kubernesto.github.io/posts/secrets-charts/#install-sealed-secrets-in-openshift[blog].
+4) Deploy the ArgoCD cluster and Cluster Logging:
 
+[source, bash]
+----
+oc apply -f openshift-step3
+----
+
+
+Check the ArgoCD admin password:
+
+[source, bash]
+----
+oc extract secret/argocd-cluster -n openshift-gitops --to=-
+----
