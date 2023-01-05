@@ -1,0 +1,11 @@
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: "rhte-demo"
+  annotations:
+    openshift.io/description: "This project contains the components of Marinera"
+    openshift.io/display-name: "RHTE Demo"
+    openshift.io/node-selector: ""
+  labels:
+    openshift.io/cluster-monitoring: "true" 
