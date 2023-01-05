@@ -20,7 +20,61 @@ Executing the setup is as easy as executing the following command:
 ./autoinstall.sh
 ----
 
-=== Can I execute the steps manually?
+== Expected output
+
+The following output shows that the cluster is being initialized correctly:
+
+[source, console]
+----
+./autoinstall.sh 
+Check. You are correctly logged in. Continue...
+Check. Cluster monitoring is missing, creating the monitoring stack...
+configmap/cluster-monitoring-config created
+
+1) CREATE THE PROJECTS
+project.project.openshift.io/openshift-operators-redhat created
+project.project.openshift.io/openshift-logging created
+project.project.openshift.io/rhte-demo created
+
+2) INSTALL THE OPERATORS
+subscription.operators.coreos.com/openshift-gitops-operator created
+operatorgroup.operators.coreos.com/openshift-operators-redhat created
+subscription.operators.coreos.com/elasticsearch-operator created
+operatorgroup.operators.coreos.com/openshift-logging created
+subscription.operators.coreos.com/cluster-logging created
+
+2.1) Run checks:
+Waiting for pods GitOps operator ready....................................................  [OK]
+Waiting for pods ElasticSearch operator ready......  [OK]
+Waiting for pods OCP Logging operator ready...  [OK]
+
+2.2) Enable Cluster Logging web console plugin
+console.operator.openshift.io/cluster patched
+
+3) DEPLOY COMPONENTS
+argocd.argoproj.io/argocd created
+clusterlogforwarder.logging.openshift.io/instance created
+clusterlogging.logging.openshift.io/instance created
+
+4) PROVIDE PERMISSIONS TO ARGOCD SERVCIE ACCOUNT
+clusterrole.rbac.authorization.k8s.io/cluster-admin added: "system:serviceaccount:openshift-gitops:argocd-argocd-server"
+clusterrole.rbac.authorization.k8s.io/cluster-admin added: "system:serviceaccount:openshift-gitops:argocd-argocd-application-controller"
+
+5) NEXT STEPS
+
+Execute the following commands to install Marinera:
+	git clone git@github.com:rhte-fiware/marinera.git
+	cd marinera/fiware-platform
+	git checkout rhte-demo
+	helm template . | oc -n openshift-gitops apply -f -
+
+----
+
+
+
+
+
+== Can I execute the steps manually?
 
 Yes, you can execute the following commands for each step: 
 
